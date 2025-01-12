@@ -93,9 +93,9 @@ class AcademicianController extends Controller
      */
     public function destroy($staff_number)
     {
-        // Delete the academician
         $academician = Academician::findOrFail($staff_number);
         $academician->delete();
-        return response()->json(null, 204);
+
+        return redirect()->route('academicians.index')->with('success', 'Academician deleted successfully.');
     }
 }
