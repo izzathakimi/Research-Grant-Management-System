@@ -1,23 +1,35 @@
 @extends('layouts.app')
-@section('title', 'Add New Child')
+@section('title', 'Add New Academician')
 @section('content')
-    <h1>Add New Child</h1>
+    <h1>Add New Academician</h1>
     
-    <form action="{{ route('children.store') }}" method="POST">
+    <form action="{{ route('academicians.store') }}" method="POST">
         @csrf
         <div class="mb-3">
-            <label for="name" class="form-label">Child's Name</label>
+            <label for="staff_number" class="form-label">Staff Number</label>
+            <input type="text" class="form-control" id="staff_number" name="staff_number" value="{{ old('staff_number') }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
             <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required>
         </div>
         <div class="mb-3">
-            <label for="age" class="form-label">Child's Age</label>
-            <input type="number" class="form-control" id="age" name="age" value="{{ old('age') }}" required>
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
         </div>
         <div class="mb-3">
-            <label for="guardian_id" class="form-label">Guardian ID</label>
-            <input type="text" class="form-control" id="guardian_id" name="guardian_id" value="{{ old('guardian_id') }}" required>
+            <label for="college" class="form-label">College</label>
+            <input type="text" class="form-control" id="college" name="college" value="{{ old('college') }}" required>
         </div>
-        <button type="submit" class="btn btn-primary">Create Child</button>
-        <a href="{{ route('children.index') }}" class="btn btn-secondary">Cancel</a>
+        <div class="mb-3">
+            <label for="department" class="form-label">Department</label>
+            <input type="text" class="form-control" id="department" name="department" value="{{ old('department') }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="position" class="form-label">Position</label>
+            <input type="text" class="form-control" id="position" name="position" value="{{ old('position') }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Create Academician</button>
+        <a href="{{ route('academicians.index') }}" class="btn btn-secondary">Cancel</a>
     </form>
 @endsection
