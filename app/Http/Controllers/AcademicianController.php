@@ -12,9 +12,8 @@ class AcademicianController extends Controller
      */
     public function index()
     {
-        // Fetch all academicians
-        $academicians = Academician::all();
-        return response()->json($academicians);
+        $academicians = Academician::paginate(10);
+        return view('academicians.index', compact('academicians'));
     }
 
     /**
