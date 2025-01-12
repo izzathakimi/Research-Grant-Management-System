@@ -15,8 +15,6 @@ class ProjectMilestoneController extends Controller
         // Fetch all milestones for a specific research grant
         $milestones = ProjectMilestone::paginate(10);
         return view('projectmilestones.index', compact('milestones'));
-
-
     }
 
     /**
@@ -57,7 +55,8 @@ class ProjectMilestoneController extends Controller
      */
     public function edit(ProjectMilestone $projectMilestone)
     {
-        //
+        $milestone = ProjectMilestone::findOrFail($id); // Find the research grant
+        return view('milestones.edit', compact('projectmilstone')); // Return the edit view
     }
 
     /**
