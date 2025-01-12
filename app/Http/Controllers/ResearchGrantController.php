@@ -8,105 +8,78 @@ use Illuminate\Http\Request;
 class ResearchGrantController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the research grants
      */
     public function index()
     {
-        // Fetch all research grants with project leaders and members
-        $researchGrants = ResearchGrant::with(['projectLeader', 'projectMembers'])->get();
-        return response()->json($researchGrants);
+        $researchGrants = ResearchGrant::with('projectLeader')->paginate(10); // Eager load projectLeader
+        return view('researchgrants.index', compact('researchGrants')); // Return the view
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new research grant
      */
     public function create()
     {
-        //
+        return view('researchgrants.create'); // Return the create view
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created research grant in storage
      */
     public function store(Request $request)
     {
-        // Validate and create a new research grant
         $request->validate([
             'grant_amount' => 'required|numeric',
             'grant_provider' => 'required|string|max:255',
             'project_title' => 'required|string|max:255',
             'start_date' => 'required|date',
             'duration' => 'required|integer',
-            'project_leader_id' => 'required|string|exists:academicians,staff_number', // Ensure the project leader exists
-            'project_members' => 'array', // Accept an array of project member IDs
-            'project_members.*' => 'string|exists:academicians,staff_number', // Validate each member ID
+            'project_leader_id' => 'required|exists:academicians,staff_number',
         ]);
 
-        $researchGrant = ResearchGrant::create($request->all());
+        ResearchGrant::create($request->all()); // Create the research grant
 
-        // Attach project members if provided
-        if ($request->has('project_members')) {
-            $researchGrant->projectMembers()->attach($request->project_members);
-        }
-
-        return response()->json($researchGrant, 201);
+        return redirect()->route('researchgrants.index')->with('success', 'Research Grant created successfully.'); // Redirect to index
     }
 
     /**
-     * Display the specified resource.
+     * Show the form for editing the specified research grant
      */
-    public function show($id)
+    public function edit($id)
     {
-        // Fetch a specific research grant by ID with project leader and members
-        $researchGrant = ResearchGrant::with(['projectLeader', 'projectMembers'])->findOrFail($id);
-        return response()->json($researchGrant);
+        $researchGrant = ResearchGrant::findOrFail($id); // Find the research grant
+        return view('researchgrants.edit', compact('researchGrant')); // Return the edit view
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ResearchGrant $researchGrant)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
+     * Update the specified research grant in storage
      */
     public function update(Request $request, $id)
     {
-        // Validate and update the research grant
         $request->validate([
-            'grant_amount' => 'sometimes|required|numeric',
-            'grant_provider' => 'sometimes|required|string|max:255',
-            'project_title' => 'sometimes|required|string|max:255',
-            'start_date' => 'sometimes|required|date',
-            'duration' => 'sometimes|required|integer',
-            'project_leader_id' => 'sometimes|required|string|exists:academicians,staff_number',
-            'project_members' => 'array',
-            'project_members.*' => 'string|exists:academicians,staff_number',
+            'grant_amount' => 'required|numeric',
+            'grant_provider' => 'required|string|max:255',
+            'project_title' => 'required|string|max:255',
+            'start_date' => 'required|date',
+            'duration' => 'required|integer',
+            'project_leader_id' => 'required|exists:academicians,staff_number',
         ]);
 
-        $researchGrant = ResearchGrant::findOrFail($id);
-        $researchGrant->update($request->all());
+        $researchGrant = ResearchGrant::findOrFail($id); // Find the research grant
+        $researchGrant->update($request->all()); // Update the research grant
 
-        // Update project members if provided
-        if ($request->has('project_members')) {
-            $researchGrant->projectMembers()->sync($request->project_members); // Sync project members
-        }
-
-        return response()->json($researchGrant);
+        return redirect()->route('researchgrants.index')->with('success', 'Research Grant updated successfully.'); // Redirect to index
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified research grant from storage
      */
     public function destroy($id)
     {
-        // Delete the research grant
-        $researchGrant = ResearchGrant::findOrFail($id);
-        $researchGrant->projectMembers()->detach(); // Detach members before deleting
-        $researchGrant->delete();
-        return response()->json(null, 204);
+        $researchGrant = ResearchGrant::findOrFail($id); // Find the research grant
+        $researchGrant->delete(); // Delete the research grant
+
+        return redirect()->route('researchgrants.index')->with('success', 'Research Grant deleted successfully.'); // Redirect to index
     }
 }

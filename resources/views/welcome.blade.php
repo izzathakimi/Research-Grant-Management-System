@@ -67,6 +67,11 @@
                             <div class="flex justify-center">
                                 <a href="{{ route('academicians.index') }}" class="btn btn-success">View Academicians</a>
                             </div>
+
+                            <!-- Button to view research grants -->
+                            <div class="flex justify-center">
+                                <a href="{{ route('researchgrants.index') }}" class="btn btn-success">View Research Grants</a>
+                            </div>
                         </div>
                     </main>
 

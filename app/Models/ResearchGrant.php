@@ -15,6 +15,10 @@ class ResearchGrant extends Model
         'project_leader_id'
     ];
 
+    protected $casts = [
+        'start_date' => 'datetime',
+    ];
+
     // Relationship: A research grant is led by one project leader
     public function projectLeader()
     {

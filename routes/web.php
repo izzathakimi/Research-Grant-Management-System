@@ -13,3 +13,4 @@ Route::get('/', function () {
 Route::resource('/academicians', AcademicianController::class);
 Route::resource('/grant-projects', ResearchGrantController::class);
 Route::resource('/milestones', ProjectMilestoneController::class);
+Route::resource('researchgrants', ResearchGrantController::class);
