@@ -19,6 +19,6 @@ class Academician extends Model
     // Relationship: An academician can be a member of many research grants
     public function researchGrants()
     {
-        return $this->belongsToMany(ResearchGrant::class, 'academician_research_grant', 'academician_id', 'research_grant_id'); // Assuming a pivot table 'academician_research_grant'
+        return $this->belongsToMany(ResearchGrant::class, 'project_member_research_grant', 'project_member_id', 'research_grant_id');
     }
 }

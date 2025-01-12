@@ -22,8 +22,8 @@ class ResearchGrant extends Model
     }
 
     // Relationship: A research grant can have many project members
-    // public function projectMembers()
-    // {
-    //     return $this->belongsToMany(Academician::class, 'academician_research_grant', 'research_grant_id', 'academician_id'); // Assuming a pivot table 'academician_research_grant'
-    // }
+    public function projectMembers()
+    {
+        return $this->belongsToMany(Academician::class, 'project_member_research_grant', 'research_grant_id', 'project_member_id');
+    }
 }
