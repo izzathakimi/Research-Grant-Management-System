@@ -59,9 +59,10 @@ class AcademicianController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Academician $academician)
+    public function edit($staff_number)
     {
-        //
+        $academician = Academician::findOrFail($staff_number);
+        return view('academicians.edit', compact('academician'));
     }
 
     /**
@@ -69,18 +70,22 @@ class AcademicianController extends Controller
      */
     public function update(Request $request, $staff_number)
     {
-        // Validate and update the academician
+        // Validate the request
         $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'email' => 'sometimes|required|string|email|max:255|unique:academicians,email,' . $staff_number . ',staff_number',
-            'college' => 'sometimes|required|string|max:255',
-            'department' => 'sometimes|required|string|max:255',
-            'position' => 'sometimes|required|string|max:255',
+            'staff_number' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:academicians,email,' . $staff_number . ',staff_number',
+            'college' => 'required|string|max:255',
+            'department' => 'required|string|max:255',
+            'position' => 'required|string|max:255',
         ]);
 
+        // Find the Academician and update their details
         $academician = Academician::findOrFail($staff_number);
         $academician->update($request->all());
-        return response()->json($academician);
+
+        // Redirect to the index page or another view
+        return redirect()->route('academicians.index')->with('success', 'Academician updated successfully.');
     }
 
     /**

@@ -32,7 +32,7 @@
                         <td>{{ $academician->position }}</td>
                         <td>
                             <a href="{{ route('academicians.show', $academician) }}" class="btn btn-sm btn-info">View</a>
-                            <a href="{{ route('academicians.edit', $academician) }}" class="btn btn-sm btn-warning">Edit</a>
+                            1<a href="{{ route('academicians.edit', $academician) }}" class="btn btn-sm btn-warning">Edit</a>
                             <form action="{{ route('academicians.destroy', $academician) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
