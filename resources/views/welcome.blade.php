@@ -72,7 +72,11 @@
                             <div class="flex justify-center">
                                 <a href="{{ route('researchgrants.index') }}" class="btn btn-success">View Research Grants</a>
                             </div>
-                        </div>
+
+                            <!-- Button to view project milestones -->
+                            <div class="flex justify-center">
+                                <a href="{{ route('milestones.index') }}" class="btn btn-success">View Project Milestones</a>
+                            </div>
                     </main>
 
 

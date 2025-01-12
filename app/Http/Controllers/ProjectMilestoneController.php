@@ -10,11 +10,13 @@ class ProjectMilestoneController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($researchGrantId)
+    public function index()
     {
         // Fetch all milestones for a specific research grant
-        $milestones = ProjectMilestone::where('research_grant_id', $researchGrantId)->get();
-        return response()->json($milestones);
+        $milestones = ProjectMilestone::paginate(10);
+        return view('projectmilestones.index', compact('milestones'));
+
+
     }
 
     /**
