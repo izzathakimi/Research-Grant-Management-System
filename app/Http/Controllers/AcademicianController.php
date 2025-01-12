@@ -21,7 +21,7 @@ class AcademicianController extends Controller
      */
     public function create()
     {
-        //
+        return view('academicians.create');
     }
 
     /**
@@ -29,18 +29,21 @@ class AcademicianController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate and create a new academician
+        // Validate the request
         $request->validate([
-            'staff_number' => 'required|string|max:255|unique:academicians',
+            'staff_number' => 'required|string|max:255',
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:academicians',
+            'email' => 'required|email|unique:academicians,email',
             'college' => 'required|string|max:255',
             'department' => 'required|string|max:255',
             'position' => 'required|string|max:255',
         ]);
 
-        $academician = Academician::create($request->all());
-        return response()->json($academician, 201);
+        // Create the Academician
+        Academician::create($request->all());
+
+        // Redirect to the index page or another view
+        return redirect()->route('academicians.index')->with('success', 'Academician created successfully.');
     }
 
     /**

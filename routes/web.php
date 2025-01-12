@@ -10,6 +10,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('/academicians',\App\Http\Controllers\AcademicianController::class);
+Route::resource('/academicians', AcademicianController::class);
 Route::resource('/grant-projects', ResearchGrantController::class);
 Route::resource('/milestones', ProjectMilestoneController::class);
