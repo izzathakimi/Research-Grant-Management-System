@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\ProjectMilestone;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class ProjectMilestoneController extends Controller
 {
+    use AuthorizesRequests;
+
     /**
      * Display a listing of the resource.
      */
@@ -35,6 +38,9 @@ class ProjectMilestoneController extends Controller
             'name' => 'required|string|max:255',
             'target_completion_date' => 'required|date',
             'deliverable' => 'required|string|max:255',
+            'status' => 'nullable|string|max:255',
+            'remark' => 'nullable|string|max:255',
+            'date_updated' => 'nullable|date',
         ]);
 
         // Create the milestone with the research_grant_id
@@ -53,10 +59,11 @@ class ProjectMilestoneController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ProjectMilestone $projectMilestone)
+    public function edit(ProjectMilestone $milestone)
     {
-        $milestone = ProjectMilestone::findOrFail($id); // Find the research grant
-        return view('milestones.edit', compact('projectmilstone')); // Return the edit view
+        // $this->authorize('update', $milestone);
+
+        return view('projectmilestones.edit', compact('milestone'));
     }
 
     /**
@@ -69,6 +76,9 @@ class ProjectMilestoneController extends Controller
             'status' => 'sometimes|string|max:255',
             'remark' => 'sometimes|string|max:255',
             'date_updated' => 'sometimes|date',
+            'name' => 'sometimes|string|max:255',
+            'target_completion_date' => 'sometimes|date',
+            'deliverable' => 'sometimes|string|max:255',
         ]);
 
         $milestone = ProjectMilestone::findOrFail($id);
