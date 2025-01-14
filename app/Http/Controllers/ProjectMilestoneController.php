@@ -23,10 +23,10 @@ class ProjectMilestoneController extends Controller
     /**
      * Show the form for creating a new resource. 
      */
-    public function create()
+    public function create(Request $request)
     {
-        // Show form for creating a new milestone
-        return view('projectmilestones.create');
+        $researchGrantId = $request->get('research_grant_id');
+        return view('projectmilestones.create', compact('researchGrantId'));
     }
 
     /**

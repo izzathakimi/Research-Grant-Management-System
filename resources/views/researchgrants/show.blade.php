@@ -24,9 +24,11 @@
             <input type="hidden" name="research_grant_id" value="{{ $researchGrant->id }}">
             <label for="staff_number">Staff Number</label>
             <input type="text" name="staff_number" id="staff_number" required>
-            <button type="submit">Add Member</button>
+            <button type="submit" class="btn btn-primary">Add Member</button>
         </form>
         </div>
+
+
         <h3>Project Members</h3>
         <table class="table table-striped mb-5">
             <thead>
@@ -57,8 +59,13 @@
        @endforeach
    </tbody>
         </table>
+        
+        <div class="add-milestone mb-5 mt-5">
+        <h3>Project Milestones         <a href="{{ route('projectmilestones.create', ['research_grant_id' => $researchGrant->id]) }}" class="btn btn-primary">
+                Add Milestone
+            </a></h3>
 
-        <h3>Project Milestones</h3>
+        </div>  
         <table class="table table-striped mb-5">
             <thead>
                 <tr>
