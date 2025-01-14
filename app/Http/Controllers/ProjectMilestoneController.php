@@ -15,23 +15,24 @@ class ProjectMilestoneController extends Controller
      */
     public function index()
     {
-        // Fetch all milestones for a specific research grant
+        // Fetch all milestones for a specific project
         $milestones = ProjectMilestone::paginate(10);
         return view('projectmilestones.index', compact('milestones'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new resource. 
      */
     public function create()
     {
-        //
+        // Show form for creating a new milestone
+        return view('projectmilestones.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, $researchGrantId)
+    public function store(Request $request)
     {
         // Validate and create a new project milestone
         $request->validate([
@@ -43,8 +44,8 @@ class ProjectMilestoneController extends Controller
             'date_updated' => 'nullable|date',
         ]);
 
-        // Create the milestone with the research_grant_id
-        $milestone = ProjectMilestone::create(array_merge($request->all(), ['research_grant_id' => $researchGrantId]));
+        // Create the milestone
+        $milestone = ProjectMilestone::create($request->all());
         return response()->json($milestone, 201);
     }
 
@@ -53,7 +54,7 @@ class ProjectMilestoneController extends Controller
      */
     public function show(ProjectMilestone $projectMilestone)
     {
-        //
+        return view('projectmilestones.show', compact('projectMilestone'));
     }
 
     /**
@@ -61,8 +62,6 @@ class ProjectMilestoneController extends Controller
      */
     public function edit(ProjectMilestone $milestone)
     {
-        // $this->authorize('update', $milestone);
-
         return view('projectmilestones.edit', compact('milestone'));
     }
 
@@ -73,17 +72,17 @@ class ProjectMilestoneController extends Controller
     {
         // Validate and update the project milestone
         $request->validate([
-            'status' => 'sometimes|string|max:255',
-            'remark' => 'sometimes|string|max:255',
-            'date_updated' => 'sometimes|date',
             'name' => 'sometimes|string|max:255',
             'target_completion_date' => 'sometimes|date',
             'deliverable' => 'sometimes|string|max:255',
+            'status' => 'sometimes|string|max:255',
+            'remark' => 'sometimes|string|max:255',
+            'date_updated' => 'sometimes|date',
         ]);
 
         $milestone = ProjectMilestone::findOrFail($id);
         $milestone->update($request->all());
-        return response()->json($milestone);
+        return redirect()->route('milestones.index')->with('success', 'Milestone updated successfully.');
     }
 
     /**

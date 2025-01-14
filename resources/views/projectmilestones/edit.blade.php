@@ -1,10 +1,10 @@
 @extends('layouts.app')
-@section('title', 'Edit Research Grant')
+@section('title', 'Edit Milestone')
 @section('content')
     <div class="container mt-4">
-        <h1>Edit Research Grant</h1>
+        <h1>Edit Milestone</h1>
         
-        <form action="{{ route('researchgrants.update', $milestone) }}" method="POST">
+        <form action="{{ route('milestones.update', $milestone->id) }}" method="POST">
             @csrf
             @method('PUT')
             
@@ -40,8 +40,8 @@
                 <textarea class="form-control" id="remark" name="remark" rows="3">{{ old('remark', $milestone->remark) }}</textarea>
             </div>
 
-            <button type="submit" class="btn btn-primary">Update Research Grant</button>
-            <a href="{{ route('researchgrants.index') }}" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">Update Milestone</button>
+            <a href="{{ route('milestones.index') }}" class="btn btn-secondary">Cancel</a>
         </form>
     </div>
 @endsection
