@@ -75,6 +75,7 @@
                     <th>Deliverable</th>
                     <th>Status</th>
                     <th>Remarks</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -85,6 +86,10 @@
                         <td>{{ $milestone->deliverable }}</td>
                         <td>{{ $milestone->status ?? 'N/A' }}</td>
                         <td>{{ $milestone->remark ?? 'N/A' }}</td>
+                        <td>
+                            <a href="{{ route('milestones.edit', $milestone) }}" 
+                               class="btn btn-warning btn-sm">Edit</a>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
