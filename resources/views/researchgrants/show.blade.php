@@ -1,79 +1,66 @@
 @extends('layouts.app')
-@section('title', 'Assessment Details')
+@section('title', 'Research Grant Details')
 @section('content')
-    <div class="card">
-        <div class="card-header">
-            <h1>Assessment Details</h1>
-        </div>
-        <div class="card-body">
-            <div class="row mb-3">
-                <div class="col-md-3 fw-bold">Assessment ID:</div>
-                <div class="col-md-9">{{ $assessment->id }}</div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-md-3 fw-bold">Student ID:</div>
-                <div class="col-md-9">{{ $assessment->student_id }}</div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-md-3 fw-bold">Marks:</div>
-                <div class="col-md-9">{{ $assessment->marks }}</div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-md-3 fw-bold">Assessment Type:</div>
-                <div class="col-md-9">{{ $assessment->assessment_type }}</div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-md-3 fw-bold">Subject Code:</div>
-                <div class="col-md-9">{{ $assessment->subject_code }}</div>
-            </div>
+    <div class="container mt-4">
+        <h1>Research Grant Details</h1>
+        
+        <h3>Grant Title: {{ $researchGrant->project_title }}</h3>
+        <p><strong>Grant Amount:</strong> {{ $researchGrant->grant_amount }}</p>
+        <p><strong>Grant Provider:</strong> {{ $researchGrant->grant_provider }}</p>
+        <p><strong>Start Date:</strong> {{ $researchGrant->start_date }}</p>
+        <p><strong>Duration:</strong> {{ $researchGrant->duration }} months</p>
+        
 
-            <!-- Display Assessment's Subjects and Enrolled Students -->
-            <h3 class="mt-4">Subjects and Enrolled Students</h3>
-            @if($assessment->subject)
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Subject Code</th>
-                            <th>Subject Name</th>
-                            <th>Description</th>
-                            <th>Enrolled Students</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{ $assessment->subject->subject_code }}</td>
-                            <td>{{ $assessment->subject->name }}</td>
-                            <td>{{ $assessment->subject->description }}</td>
-                            <td>
-                                @if($assessment->subject->students->count() > 0)
-                                    <ul>
-                                        @foreach($assessment->subject->students as $student)
-                                            <li>{{ $student->name }} ({{ $student->email }})</li>
-                                        @endforeach
-                                    </ul>
-                                @else
-                                    No students enrolled
-                                @endif
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            @else
-                <div class="alert alert-info">
-                    This assessment is not associated with any subjects yet.
-                </div>
-            @endif
+        <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
+            <div class="d-flex align-items-center">
+            <h3 class="mt-5">Project Members</h3>                
+            <a href="{{ route('projectmembers.create') }}" class="btn btn-primary btn-lg">+</a>
+            </div>
         </div>
-        <div class="card-footer">
-            <a href="{{ route('assessments.edit', $assessment) }}" class="btn btn-warning">Edit Assessment</a>
-            <a href="{{ route('assessments.index') }}" class="btn btn-secondary">Back to List</a>
-            <form action="{{ route('assessments.destroy', $assessment) }}" method="POST" class="d-inline">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this assessment?')">
-                    Delete Assessment
-                </button>
-            </form>
-        </div>
+
+        <table class="table table-striped mb-5">
+            <thead>
+                <tr>
+                    <th>Staff Number</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($researchGrant->projectMembers as $member)
+                    <tr>
+                        <td>{{ $member->staff_number }}</td>
+                        <td>{{ $member->name }}</td>
+                        <td>{{ $member->email }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+        <h3>Project Milestones</h3>
+        <table class="table table-striped mb-5">
+            <thead>
+                <tr>
+                    <th>Milestone Name</th>
+                    <th>Target Completion Date</th>
+                    <th>Deliverable</th>
+                    <th>Status</th>
+                    <th>Remarks</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($researchGrant->milestones as $milestone)
+                    <tr>
+                        <td>{{ $milestone->name }}</td>
+                        <td>{{ \Carbon\Carbon::parse($milestone->target_completion_date)->format('Y-m-d') }}</td>
+                        <td>{{ $milestone->deliverable }}</td>
+                        <td>{{ $milestone->status ?? 'N/A' }}</td>
+                        <td>{{ $milestone->remark ?? 'N/A' }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+        <a href="{{ route('researchgrants.index') }}" class="btn btn-secondary">Back to Grants</a>
     </div>
 @endsection

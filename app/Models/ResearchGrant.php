@@ -30,4 +30,9 @@ class ResearchGrant extends Model
     {
         return $this->belongsToMany(Academician::class, 'project_member_research_grant', 'research_grant_id', 'project_member_id');
     }
+
+    public function milestones()
+    {
+        return $this->hasMany(ProjectMilestone::class, 'research_grant_id');
+    }
 }

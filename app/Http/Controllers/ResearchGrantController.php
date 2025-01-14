@@ -82,4 +82,13 @@ class ResearchGrantController extends Controller
 
         return redirect()->route('researchgrants.index')->with('success', 'Research Grant deleted successfully.'); // Redirect to index
     }
+
+    /**
+     * Show the details of the specified research grant
+     */
+    public function show($id)
+    {
+        $researchGrant = ResearchGrant::with(['projectMembers', 'milestones'])->findOrFail($id); // Eager load project members and milestones
+        return view('researchgrants.show', compact('researchGrant'));
+    }
 }
