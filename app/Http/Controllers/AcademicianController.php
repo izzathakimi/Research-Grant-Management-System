@@ -98,4 +98,13 @@ class AcademicianController extends Controller
 
         return redirect()->route('academicians.index')->with('success', 'Academician deleted successfully.');
     }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+        $academicians = Academician::where('name', 'LIKE', "%{$query}%")->get(['staff_number', 'name', 'email']);
+
+        // Return a view with the search results
+        return view('academicians.search_results', compact('academicians'));
+    }
 }

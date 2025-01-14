@@ -16,3 +16,8 @@ Route::resource('/grant-projects', ResearchGrantController::class);
 Route::resource('milestones', ProjectMilestoneController::class);
 Route::resource('researchgrants', ResearchGrantController::class);
 Route::resource('/project-members', ProjectMemberController::class);
+Route::resource('projectmembers', ProjectMemberController::class);
+
+Route::get('/academicians/search', [AcademicianController::class, 'search']);
+
+Route::delete('/project-members/{project_member_id}', [ProjectMemberController::class, 'destroy'])->name('project-members.destroy');
