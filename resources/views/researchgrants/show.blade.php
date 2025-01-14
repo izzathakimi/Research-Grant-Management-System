@@ -61,10 +61,11 @@
         </table>
         
         <div class="add-milestone mb-5 mt-5">
-        <h3>Project Milestones         <a href="{{ route('projectmilestones.create', ['research_grant_id' => $researchGrant->id]) }}" class="btn btn-primary">
-                Add Milestone
-            </a></h3>
-
+            <h3>Project Milestones
+                <a href="{{ route('projectmilestones.create', ['research_grant_id' => $researchGrant->id]) }}" class="btn btn-primary">
+                    Add Milestone
+                </a>
+            </h3>
         </div>  
         <table class="table table-striped mb-5">
             <thead>

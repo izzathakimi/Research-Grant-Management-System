@@ -23,3 +23,5 @@ Route::get('/academicians/search', [AcademicianController::class, 'search']);
 Route::delete('/project-members/{project_member_id}', [ProjectMemberController::class, 'destroy'])->name('project-members.destroy');
 Route::get('/milestones/create', [ProjectMilestoneController::class, 'create'])->name('projectmilestones.create');
 Route::post('/milestones', [ProjectMilestoneController::class, 'store'])->name('projectmilestones.store');
+
+Route::get('/researchgrants/{researchgrant}', [ResearchGrantController::class, 'show'])->name('researchgrants.show');

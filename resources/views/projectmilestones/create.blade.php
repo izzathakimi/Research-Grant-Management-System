@@ -1,38 +1,46 @@
-
-
 @extends('layouts.app')
-@section('title', 'Add Milestone')
+
 @section('content')
-    <div class="container mt-4">
-        <h1>Add Milestone</h1>
-        
-        <form action="{{ route('projectmilestones.store') }}" method="POST">
-            @csrf
-            <input type="hidden" name="research_grant_id" value="{{ $researchGrantId }}">
+<div class="container mt-4">
+    <h2>Add Milestone</h2>
 
-            <div class="mb-3">
-                <label for="project_title" class="form-label">Milestone Name</label>
-                <input type="text" class="form-control" id="name" name="milestone_name" required>
-            </div>
-            <div class="mb-3">
-                <label for="grant_amount" class="form-label">Target Completion Date</label>
-                <input type="number" step="0.01" class="form-control" id="completetion_date" name="completetion_date" required>
-            </div>
-            <div class="mb-3">
-                <label for="grant_provider" class="form-label">Deliverable</label>
-                <input type="text" class="form-control" id="Deliverable" name="Deliverable" required>
-            </div>
-            <div class="mb-3">
-                <label for="start_date" class="form-label">Status</label>
-                <input type="date" class="form-control" id="Status" name="Status" required>
-            </div>
-            <div class="mb-3">
-                <label for="duration" class="form-label">Remark</label>
-                <input type="number" class="form-control" id="Remark" name="Remark" required>
-            </div>
+    <form action="{{ route('projectmilestones.store') }}" method="POST" class="mt-4">
+        @csrf
+        <input type="hidden" name="research_grant_id" value="{{ $researchGrant->id }}">
 
+        <div class="form-group mb-3">
+            <label for="name">Milestone Name</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="target_completion_date">Target Completion Date</label>
+            <input type="date" class="form-control" id="target_completion_date" name="target_completion_date" required>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="deliverable">Deliverable</label>
+            <textarea class="form-control" id="deliverable" name="deliverable" required></textarea>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="status">Status</label>
+            <select class="form-control" id="status" name="status">
+                <option value="Pending">Pending</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+            </select>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="remark">Remarks</label>
+            <textarea class="form-control" id="remark" name="remark"></textarea>
+        </div>
+
+        <div class="mt-4">
             <button type="submit" class="btn btn-primary">Create Milestone</button>
-            <a href="{{ route('researchgrants.show', ['research_grant_id' => $researchGrantId]) }}" class="btn btn-secondary">Cancel</a>
-        </form>
-    </div>
+            <a href="{{ route('researchgrants.show', ['researchgrant' => $researchGrant->id]) }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
 @endsection

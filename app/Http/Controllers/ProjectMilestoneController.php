@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProjectMilestone;
+use App\Models\ResearchGrant;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
@@ -25,8 +26,18 @@ class ProjectMilestoneController extends Controller
      */
     public function create(Request $request)
     {
-        $researchGrantId = $request->get('research_grant_id');
-        return view('projectmilestones.create', compact('researchGrantId'));
+        $researchGrantId = $request->query('research_grant_id');
+        
+        if (!$researchGrantId) {
+            return redirect()->back()->with('error', 'Research Grant ID is required');
+        }
+        
+        $researchGrant = \App\Models\ResearchGrant::findOrFail($researchGrantId);
+        
+        return view('projectmilestones.create', [
+            'researchGrantId' => $researchGrantId,
+            'researchGrant' => $researchGrant
+        ]);
     }
 
     /**
@@ -34,19 +45,20 @@ class ProjectMilestoneController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate and create a new project milestone
-        $request->validate([
-            'name' => 'required|string|max:255',
+        $validatedData = $request->validate([
+            'research_grant_id' => 'required|exists:research_grants,id',
+            'name' => 'required',
             'target_completion_date' => 'required|date',
-            'deliverable' => 'required|string|max:255',
-            'status' => 'nullable|string|max:255',
-            'remark' => 'nullable|string|max:255',
-            'date_updated' => 'nullable|date',
+            'deliverable' => 'required',
+            'status' => 'required',
+            'remark' => 'nullable'
         ]);
 
-        // Create the milestone
-        $milestone = ProjectMilestone::create($request->all());
-        return response()->json($milestone, 201);
+        $milestone = \App\Models\ProjectMilestone::create($validatedData);
+
+        return redirect()
+            ->route('researchgrants.show', ['researchgrant' => $request->research_grant_id])
+            ->with('success', 'Milestone created successfully');
     }
 
     /**
