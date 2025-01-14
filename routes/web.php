@@ -25,3 +25,6 @@ Route::get('/milestones/create', [ProjectMilestoneController::class, 'create'])-
 Route::post('/milestones', [ProjectMilestoneController::class, 'store'])->name('projectmilestones.store');
 
 Route::get('/researchgrants/{researchgrant}', [ResearchGrantController::class, 'show'])->name('researchgrants.show');
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
