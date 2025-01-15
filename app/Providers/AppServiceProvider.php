@@ -28,5 +28,19 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('manage-research-grants', function (User $user) {
             return $user->role === 'admin';
         });
+
+        Gate::define('manage-project-members', function (User $user) {
+            return in_array($user->role, ['admin', 'staff', 'project_leader']);
+        });
+
+        Gate::define('manage-project-milestones', function (User $user) {
+            return in_array($user->role, ['admin', 'project_leader']);
+        });
+
+        Gate::define('manage-academicians', function (User $user) {
+            return $user->role === 'admin';
+        });
+
+        
     }
 }

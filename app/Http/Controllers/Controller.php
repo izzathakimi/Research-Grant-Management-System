@@ -9,4 +9,9 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
+
+    protected function unauthorized()
+    {
+        return response()->view('errors.403', [], 403);
+    }
 }

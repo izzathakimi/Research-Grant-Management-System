@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ProjectMember;
 use App\Models\ResearchGrant;
+use Illuminate\Support\Facades\Gate;
 
 class ProjectMemberController extends Controller
 {
@@ -21,6 +22,9 @@ class ProjectMemberController extends Controller
      */
     public function create()
     {
+        if (! Gate::allows('manage-project-members')) {
+            abort(403);
+        }
         //
     }
 
@@ -29,6 +33,9 @@ class ProjectMemberController extends Controller
      */
     public function store(Request $request)
     {
+        if (! Gate::allows('manage-project-members')) {
+            abort(403);
+        }
         // Validate the request
         $validatedData = $request->validate([
             'staff_number' => 'required|exists:academicians,staff_number', // Ensure staff_number exists
@@ -75,6 +82,10 @@ class ProjectMemberController extends Controller
      */
     public function destroy($project_member_id)
     {
+        if (! Gate::allows('manage-project-members')) {
+            abort(403);
+        }
+
         // Find the project member using project_member_id
         $projectMember = ProjectMember::where('project_member_id', $project_member_id)->firstOrFail();
         $projectMember->delete();

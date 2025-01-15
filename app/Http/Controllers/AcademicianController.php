@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Academician;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class AcademicianController extends Controller
 {
@@ -12,6 +13,9 @@ class AcademicianController extends Controller
      */
     public function index()
     {
+        if (! Gate::allows('manage-academicians')) {
+            return $this->unauthorized();
+        }
         $academicians = Academician::paginate(10);
         return view('academicians.index', compact('academicians'));
     }
@@ -21,6 +25,9 @@ class AcademicianController extends Controller
      */
     public function create()
     {
+        if (! Gate::allows('manage-academicians')) {
+            return $this->unauthorized();
+        }
         return view('academicians.create');
     }
 
@@ -29,6 +36,9 @@ class AcademicianController extends Controller
      */
     public function store(Request $request)
     {
+        if (! Gate::allows('manage-academicians')) {
+            return $this->unauthorized();
+        }
         // Validate the request
         $request->validate([
             'staff_number' => 'required|string|max:255',
@@ -61,6 +71,9 @@ class AcademicianController extends Controller
      */
     public function edit($staff_number)
     {
+        if (! Gate::allows('manage-academicians')) {
+            return $this->unauthorized();
+        }
         $academician = Academician::findOrFail($staff_number);
         return view('academicians.edit', compact('academician'));
     }
@@ -70,6 +83,9 @@ class AcademicianController extends Controller
      */
     public function update(Request $request, $staff_number)
     {
+        if (! Gate::allows('manage-academicians')) {
+            return $this->unauthorized();
+        }
         // Validate the request
         $request->validate([
             'staff_number' => 'required|string|max:255',
@@ -93,6 +109,9 @@ class AcademicianController extends Controller
      */
     public function destroy($staff_number)
     {
+        if (! Gate::allows('manage-academicians')) {
+            return $this->unauthorized();
+        }
         $academician = Academician::findOrFail($staff_number);
         $academician->delete();
 

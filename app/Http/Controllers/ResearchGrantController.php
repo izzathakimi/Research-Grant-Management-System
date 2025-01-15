@@ -23,7 +23,7 @@ class ResearchGrantController extends Controller
     public function create()
     {
         if (! Gate::allows('manage-research-grants')) {
-            abort(403);
+            return $this->unauthorized();
         }
         return view('researchgrants.create'); // Return the create view
     }
@@ -54,7 +54,7 @@ class ResearchGrantController extends Controller
     {
         $researchGrant = ResearchGrant::findOrFail($id); // Find the research grant
         if (! Gate::allows('manage-research-grants')) {
-            abort(403);
+            return $this->unauthorized();
         }
         
         return view('researchgrants.edit', compact('researchGrant'));
@@ -87,7 +87,7 @@ class ResearchGrantController extends Controller
     {
         $researchGrant = ResearchGrant::findOrFail($id); // Find the research grant
         if (! Gate::allows('manage-research-grants')) {
-            abort(403);
+            return $this->unauthorized();
         }
         
         $researchGrant->delete(); // Delete the research grant

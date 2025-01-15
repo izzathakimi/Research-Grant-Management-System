@@ -20,7 +20,30 @@
                 @if (Route::has('login'))
                     <div>
                         @auth
-                            <a href="{{ url('/dashboard') }}" class="btn btn-primary">Dashboard</a>
+                        <div class="dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle btn btn-light" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                {{ Auth::user()->name }}
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('academicians.index') }}">
+                                    <i class="bi bi-people"></i> View Academicians
+                                </a>
+                                <a class="dropdown-item" href="{{ route('researchgrants.index') }}">
+                                    <i class="bi bi-file-text"></i> View Research Grants
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                   onclick="event.preventDefault();
+                                         document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
+                                </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </div>
+                        </div>
                         @else
                             <a href="{{ route('login') }}" class="btn btn-primary me-2">Log in</a>
                             @if (Route::has('register'))
@@ -39,24 +62,18 @@
                     <div class="col-xl-6">
                         <div class="text-center text-white">
                             <h1 class="mb-5">Research Grant Management System</h1>
-                            <!-- Your existing buttons styled with Bootstrap -->
+                            <!-- Buttons styled with Bootstrap -->
                             <div class="row g-3">
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <a href="{{ route('academicians.index') }}" class="btn btn-light btn-lg w-100">
                                         <i class="bi bi-people"></i>
                                         View Academicians
                                     </a>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <a href="{{ route('researchgrants.index') }}" class="btn btn-light btn-lg w-100">
                                         <i class="bi bi-file-text"></i>
                                         View Research Grants
-                                    </a>
-                                </div>
-                                <div class="col-md-4">
-                                    <a href="{{ route('milestones.index') }}" class="btn btn-light btn-lg w-100">
-                                        <i class="bi bi-flag"></i>
-                                        View Project Milestones
                                     </a>
                                 </div>
                             </div>

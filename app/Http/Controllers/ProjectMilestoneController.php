@@ -6,6 +6,7 @@ use App\Models\ProjectMilestone;
 use App\Models\ResearchGrant;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Gate;
 
 class ProjectMilestoneController extends Controller
 {
@@ -26,6 +27,9 @@ class ProjectMilestoneController extends Controller
      */
     public function create(Request $request)
     {
+        if (! Gate::allows('manage-project-milestones')) {
+            return $this->unauthorized();
+        }
         $researchGrantId = $request->query('research_grant_id');
         
         if (!$researchGrantId) {
@@ -45,6 +49,9 @@ class ProjectMilestoneController extends Controller
      */
     public function store(Request $request)
     {
+        if (! Gate::allows('manage-project-milestones')) {
+            return $this->unauthorized();
+        }
         $validatedData = $request->validate([
             'research_grant_id' => 'required|exists:research_grants,id',
             'name' => 'required',
@@ -74,6 +81,9 @@ class ProjectMilestoneController extends Controller
      */
     public function edit(ProjectMilestone $milestone)
     {
+        if (! Gate::allows('manage-project-milestones')) {
+            return $this->unauthorized();
+        }
         return view('projectmilestones.edit', compact('milestone'));
     }
 
@@ -102,6 +112,9 @@ class ProjectMilestoneController extends Controller
      */
     public function destroy($id)
     {
+        if (! Gate::allows('manage-project-milestones')) {
+            return $this->unauthorized();
+        }
         // Delete the project milestone
         $milestone = ProjectMilestone::findOrFail($id);
         $milestone->delete();
