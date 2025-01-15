@@ -18,7 +18,7 @@
                     <th>College</th>
                     <th>Department</th>
                     <th>Position</th>
-                    <th>Role</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
