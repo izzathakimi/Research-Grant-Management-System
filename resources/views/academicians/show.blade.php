@@ -1,44 +1,95 @@
 @extends('layouts.app')
-@section('title', 'Child Details')
+@section('title', 'Academician Details')
 @section('content')
-    <div class="card">
-        <div class="card-header">
-            <h1>Child Details</h1>
+    <div class="container mt-4 mb-5">
+        <div class="academician-details mt-4 mb-5">
+            <h1>Academician Details</h1>
+            
+            <h3>Name: {{ $academician->name }}</h3>
+            <p><strong>Staff Number:</strong> {{ $academician->staff_number }}</p>
+            <p><strong>Email:</strong> {{ $academician->email }}</p>
+            <p><strong>College:</strong> {{ $academician->college }}</p>
+            <p><strong>Department:</strong> {{ $academician->department }}</p>
+            <p><strong>Position:</strong> {{ $academician->position }}</p>
         </div>
-        <div class="card-body">
-            <div class="row mb-3">
-                <div class="col-md-3 fw-bold">Child ID:</div>
-                <div class="col-md-9">{{ $child->id }}</div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-md-3 fw-bold">Name:</div>
-                <div class="col-md-9">{{ $child->name }}</div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-md-3 fw-bold">Age:</div>
-                <div class="col-md-9">{{ $child->age }}</div>
-            </div>
 
-            <!-- Display Guardians -->
-            <h3 class="mt-4">Guardians</h3>
-            @if($child->guardians->count() > 0)
-                <ul>
-                    @foreach($child->guardians as $guardian)
-                        <li>
-                            Father's Name: {{ $guardian->father }}, 
-                            Mother's Name: {{ $guardian->mother }}
-                        </li>
-                    @endforeach
-                </ul>
-            @else
-                <div class="alert alert-info">
-                    No guardians associated with this child.
-                </div>
-            @endif
-        </div>
-        <div class="card-footer">
-            <a href="{{ route('children.edit', $child) }}" class="btn btn-warning">Edit Child</a>
-            <a href="{{ route('children.index') }}" class="btn btn-secondary">Back to List</a>
-        </div>
+        <h3>Research Projects Involved</h3>
+        <table class="table table-striped mb-5">
+            <thead>
+                <tr>
+                    <th>Project ID</th>
+                    <th>Project Title</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @php
+                    $projects = DB::table('project_member_research_grant')
+                        ->where('project_member_id', $academician->staff_number)
+                        ->get();
+                @endphp
+
+                @forelse($projects as $project)
+                <tr>
+                    <td>{{ $project->research_grant_id }}</td>
+                    <td>{{ DB::table('research_grants')->where('id', $project->research_grant_id)->value('project_title') }}</td>
+                    <td>
+                        <a href="{{ route('researchgrants.show', $project->research_grant_id) }}" 
+                           class="btn btn-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                                <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                            </svg>
+                        </a>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="3">No research projects found.</td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+
+        <h3>Projects Led</h3>
+        <table class="table table-striped mb-5">
+            <thead>
+                <tr>
+                    <th>Project ID</th>
+                    <th>Project Title</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @php
+                    $projectsLed = DB::table('research_grants')
+                        ->where('project_leader_id', $academician->staff_number)
+                        ->select('id', 'project_title')
+                        ->get();
+                @endphp
+
+                @forelse($projectsLed as $project)
+                <tr>
+                    <td>{{ $project->id }}</td>
+                    <td>{{ $project->project_title }}</td>
+                    <td>
+                        <a href="{{ route('researchgrants.show', $project->id) }}" 
+                           class="btn btn-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                                <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                            </svg>
+                        </a>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="3">No projects led found.</td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+
+        <a href="{{ route('academicians.index') }}" class="btn btn-secondary">Back to Academicians</a>
     </div>
 @endsection

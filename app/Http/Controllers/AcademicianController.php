@@ -61,9 +61,8 @@ class AcademicianController extends Controller
      */
     public function show($staff_number)
     {
-        // Fetch a specific academician by staff_number
         $academician = Academician::findOrFail($staff_number);
-        return response()->json($academician);
+        return view('academicians.show', compact('academician'));
     }
 
     /**
