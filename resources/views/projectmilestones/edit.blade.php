@@ -41,7 +41,7 @@
             </div>
 
             <button type="submit" class="btn btn-primary">Update Milestone</button>
-            <a href="{{ route('milestones.index') }}" class="btn btn-secondary">Cancel</a>
+            <a href="{{ route('researchgrants.show', ['researchgrant' => $researchGrant->id]) }}" class="btn btn-secondary">Cancel</a>
         </form>
     </div>
 @endsection

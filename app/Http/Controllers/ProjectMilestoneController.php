@@ -84,7 +84,11 @@ class ProjectMilestoneController extends Controller
         if (! Gate::allows('manage-project-milestones')) {
             return $this->unauthorized();
         }
-        return view('projectmilestones.edit', compact('milestone'));
+        
+        // Get the associated research grant
+        $researchGrant = $milestone->researchGrant;
+        
+        return view('projectmilestones.edit', compact('milestone', 'researchGrant'));
     }
 
     /**
