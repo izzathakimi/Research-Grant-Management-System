@@ -10,24 +10,30 @@
         <table class="table table-striped">
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Project Title</th>
                     <th>Grant Amount</th>
                     <th>Grant Provider</th>
                     <th>Start Date</th>
-                    <th>Duration (Months)</th>
-                    <th>Project Leader</th>
-                    <th style="width: 200px;">Actions</th>
+                    <th>Duration</th>
+                    <th>Estimated Finish Date</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($researchGrants as $grant)
+                    @php
+                        $startDate = new DateTime($grant->start_date);
+                        $estimatedFinish = (clone $startDate)->modify("+{$grant->duration} months");
+                    @endphp
                     <tr>
+                        <td>{{ $grant->id }}</td>
                         <td>{{ $grant->project_title }}</td>
-                        <td>{{ number_format($grant->grant_amount, 2) }}</td>
+                        <td>{{ $grant->grant_amount }}</td>
                         <td>{{ $grant->grant_provider }}</td>
-                        <td>{{ $grant->start_date->format('Y-m-d') }}</td>
+                        <td>{{ $grant->start_date }}</td>
                         <td>{{ $grant->duration }}</td>
-                        <td>{{ $grant->projectLeader->name ?? 'N/A' }}</td>
+                        <td>{{ $estimatedFinish->format('Y-m-d') }}</td>
                         <td>
                             <div class="d-flex justify-content-around">
                                 <a href="{{ route('researchgrants.show', $grant) }}" class="btn btn-sm btn-info">View</a>
