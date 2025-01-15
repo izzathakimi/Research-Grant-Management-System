@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ResearchGrant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class ResearchGrantController extends Controller
 {
@@ -21,6 +22,9 @@ class ResearchGrantController extends Controller
      */
     public function create()
     {
+        if (! Gate::allows('manage-research-grants')) {
+            abort(403);
+        }
         return view('researchgrants.create'); // Return the create view
     }
 
@@ -49,7 +53,11 @@ class ResearchGrantController extends Controller
     public function edit($id)
     {
         $researchGrant = ResearchGrant::findOrFail($id); // Find the research grant
-        return view('researchgrants.edit', compact('researchGrant')); // Return the edit view
+        if (! Gate::allows('manage-research-grants')) {
+            abort(403);
+        }
+        
+        return view('researchgrants.edit', compact('researchGrant'));
     }
 
     /**
@@ -78,6 +86,10 @@ class ResearchGrantController extends Controller
     public function destroy($id)
     {
         $researchGrant = ResearchGrant::findOrFail($id); // Find the research grant
+        if (! Gate::allows('manage-research-grants')) {
+            abort(403);
+        }
+        
         $researchGrant->delete(); // Delete the research grant
 
         return redirect()->route('researchgrants.index')->with('success', 'Research Grant deleted successfully.'); // Redirect to index

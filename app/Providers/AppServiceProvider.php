@@ -25,10 +25,8 @@ class AppServiceProvider extends ServiceProvider
         //
             Schema::defaultStringLength(191);
 
-        Gate::define('list-feedback', function (User $user) {
-            return in_array($user->role, ['admin', 'staff']); // Only admin and staff can access
-            // OR
-            return $user->role === 'admin'; // Only admin can access
+        Gate::define('manage-research-grants', function (User $user) {
+            return $user->role === 'admin';
         });
     }
 }
