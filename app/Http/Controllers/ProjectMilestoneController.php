@@ -96,19 +96,28 @@ class ProjectMilestoneController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (! Gate::allows('manage-project-milestones')) {
+            return $this->unauthorized();
+        }
+
         // Validate and update the project milestone
         $request->validate([
-            'name' => 'sometimes|string|max:255',
-            'target_completion_date' => 'sometimes|date',
-            'deliverable' => 'sometimes|string|max:255',
-            'status' => 'sometimes|string|max:255',
-            'remark' => 'sometimes|string|max:255',
-            'date_updated' => 'sometimes|date',
+            'name' => 'required|string|max:255',
+            'target_completion_date' => 'required|date',
+            'deliverable' => 'required|string|max:255',
+            'status' => 'required|string|max:255',
+            'remark' => 'nullable|string|max:255',
         ]);
 
         $milestone = ProjectMilestone::findOrFail($id);
         $milestone->update($request->all());
-        return redirect()->route('milestones.index')->with('success', 'Milestone updated successfully.');
+
+        // Get the research grant ID for redirect
+        $researchGrantId = $milestone->research_grant_id;
+
+        // Redirect to the research grant show page
+        return redirect()->route('researchgrants.show', $researchGrantId)
+            ->with('success', 'Milestone updated successfully.');
     }
 
     /**
