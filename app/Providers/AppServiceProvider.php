@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
             Schema::defaultStringLength(191);
 
         Gate::define('manage-research-grants', function (User $user) {
-            return $user->role === 'admin';
+            return in_array($user->role, ['admin', 'staff']);
         });
 
         Gate::define('manage-project-members', function (User $user) {
