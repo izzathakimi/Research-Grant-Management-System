@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Gate::define('manage-project-milestones', function (User $user) {
-            return in_array($user->role, ['admin', 'project_leader']);
+            return $user->role === 'project_leader';
         });
 
         Gate::define('manage-academicians', function (User $user) {
