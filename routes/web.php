@@ -11,10 +11,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('/academicians', AcademicianController::class);
+Route::resource('/academicians', AcademicianController::class)
+    ->middleware(['auth']);
 Route::resource('/grant-projects', ResearchGrantController::class);
-Route::resource('milestones', ProjectMilestoneController::class);
-Route::resource('researchgrants', ResearchGrantController::class);
+Route::resource('milestones', ProjectMilestoneController::class)
+    ->middleware(['auth']);
+Route::resource('researchgrants', ResearchGrantController::class)
+    ->middleware(['auth']);
 Route::resource('/project-members', ProjectMemberController::class);
 Route::resource('projectmembers', ProjectMemberController::class);
 
