@@ -27,10 +27,23 @@
                 <label for="duration" class="form-label">Duration (Months)</label>
                 <input type="number" class="form-control" id="duration" name="duration" value="{{ old('duration', $researchGrant->duration) }}" required>
             </div>
+            
             <div class="mb-3">
-                <label for="project_leader_id" class="form-label">Project Leader ID</label>
-                <input type="text" class="form-control" id="project_leader_id" name="project_leader_id" value="{{ old('project_leader_id', $researchGrant->project_leader_id) }}" required>
+                <label for="project_leader_id" class="form-label">Project Leader</label>
+                <select name="project_leader_id" id="project_leader_id" class="form-select" required>
+                    <option value="">Select Project Leader</option>
+                    @php
+                        $academicians = DB::table('academicians')->select('staff_number', 'name')->get();
+                    @endphp
+                    @foreach($academicians as $academician)
+                        <option value="{{ $academician->staff_number }}" 
+                            {{ old('project_leader_id', $researchGrant->project_leader_id) == $academician->staff_number ? 'selected' : '' }}>
+                            {{ $academician->name }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
+
             <button type="submit" class="btn btn-primary">Update Research Grant</button>
             <a href="{{ route('researchgrants.index') }}" class="btn btn-secondary">Cancel</a>
         </form>

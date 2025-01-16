@@ -23,7 +23,17 @@
             @csrf
             <input type="hidden" name="research_grant_id" value="{{ $researchGrant->id }}">
             <label for="staff_number">Staff Number</label>
-            <input type="text" name="staff_number" id="staff_number" required>
+            <select name="staff_number" id="staff_number" class="form-select" required>
+                <option value="">Select Staff Number</option>
+                @php
+                    $academicians = DB::table('academicians')->select('staff_number', 'name')->get();
+                @endphp
+                @foreach($academicians as $academician)
+                    <option value="{{ $academician->staff_number }}">
+                        {{ $academician->staff_number }} - {{ $academician->name }}
+                    </option>
+                @endforeach
+            </select>
             <button type="submit" class="btn btn-primary">Add Member</button>
         </form>
         </div>
